@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Button from '../components/common/Button.jsx'
 import Reveal from '../components/common/Reveal.jsx'
 import StatsSection from '../components/common/StatsSection.jsx'
@@ -10,7 +11,7 @@ import SocialLinks from '../components/common/SocialLinks.jsx'
 import branches from '../data/branches.js'
 import { generalAmenities, studentPerks } from '../data/amenities.js'
 import reviews from '../data/reviews.js'
-import { hero1, about1, contactOffice, securityIcon, studyIcon } from '../assets/images/index.js'
+import { hero1, hero2, hero3, hero4, about1, contactOffice, securityIcon, studyIcon } from '../assets/images/index.js'
 
 const SectionHeading = ({ eyebrow, title, text }) => (
   <Reveal>
@@ -22,6 +23,17 @@ const SectionHeading = ({ eyebrow, title, text }) => (
 )
 
 export default function Home() {
+  const heroImages = [hero1, hero2, hero3, hero4]
+  const [activeHero, setActiveHero] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveHero((current) => (current + 1) % heroImages.length)
+    }, 4000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div className="page-enter">
       <section
@@ -65,16 +77,20 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Keep the original hero-card design visible on every screen size. */}
           <div className="relative block hero-rise delay-2 mt-8 lg:mt-0">
             <div className="relative mx-auto w-full max-w-lg aspect-[4/4.3] rounded-[2.5rem] bg-navy shadow-2xl shadow-navy/25 overflow-hidden border-8 border-white/70">
-              <img
-                src={hero1}
-                alt="SA Group hostel residents studying together"
-                className="absolute inset-0 h-full w-full object-cover"
-                loading="eager"
-                fetchPriority="high"
-              />
+              {heroImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`SA Group hostel showcase ${index + 1}`}
+                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${
+                    activeHero === index ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={index === 0 ? 'high' : 'auto'}
+                />
+              ))}
 
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-navy/95 to-transparent" />
 
@@ -85,6 +101,20 @@ export default function Home() {
                 <h2 className="font-display font-bold text-xl sm:text-3xl mt-2 leading-tight">
                   Comfort that supports your ambition.
                 </h2>
+              </div>
+
+              <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                {heroImages.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    aria-label={`Show hero image ${index + 1}`}
+                    onClick={() => setActiveHero(index)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      activeHero === index ? 'w-6 bg-amber' : 'w-2 bg-white/70'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
 
