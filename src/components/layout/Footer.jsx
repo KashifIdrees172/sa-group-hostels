@@ -53,7 +53,7 @@ export default function Footer() {
         <div>
           <a href="/#home" className="group inline-block">
             <div className="transition-transform duration-300 group-hover:scale-105">
-              <Logo size={72} animated={false} light />
+              <Logo size={72} animated={false} />
             </div>
           </a>
           <p className="text-sm font-semibold text-cream mt-4">
