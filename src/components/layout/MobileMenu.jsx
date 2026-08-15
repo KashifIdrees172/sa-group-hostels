@@ -145,7 +145,7 @@ export default function MobileMenu({ open, onClose, onBookInspection }) {
             </div>
 
             <a
-              href="https://wa.me/923294234986"
+              href="https://wa.me/923193815068"
               className="mt-3 flex items-center justify-between rounded-2xl border border-navy/10 bg-white px-4 py-3 text-sm transition-all hover:border-amber/60 hover:shadow-md"
             >
               <span>

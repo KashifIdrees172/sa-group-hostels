@@ -318,11 +318,11 @@ export default function Home() {
             </p>
 
             <div className="space-y-4 mt-7 text-sm">
-              <a className="contact-row" href="https://wa.me/923294234986">
+              <a className="contact-row" href="https://wa.me/923193815068">
                 <span>📞</span>
                 <div>
                   <small>Call or WhatsApp</small>
-                  <b>0329-4234986</b>
+                  <b>0319-3815068</b>
                 </div>
               </a>
 

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Button from './Button.jsx'
 import branches from '../../data/branches.js'
 
-const WHATSAPP_NUMBER = '923294234986'
+const WHATSAPP_NUMBER = '923193815068'
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: '', phone: '', branch: '', message: '' })

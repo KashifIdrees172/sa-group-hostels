@@ -1,15 +1,14 @@
 // Central image registry for Vite.
+
 import hero1 from './hero/hero1.png'
 import hero2 from './hero/hero2.png'
 import hero3 from './hero/hero3.png'
 import hero4 from './hero/hero4.png'
 
+// Only about1 is currently used
 import about1 from './about/about1.png'
-import about2 from './about/about2.png'
-import about3 from './about/about3.png'
-import about4 from './about/about4.png'
 
-import logo from './logo/logo.png.jpeg'
+import logo from './logo/logo.png'
 import logoWhite from './logo/logo-white.png'
 import favicon from './logo/favicon.png'
 
@@ -40,24 +39,58 @@ import student4 from './reviews/student4.png'
 import student5 from './reviews/student5.png'
 import student6 from './reviews/student6.png'
 
-const branchFiles = import.meta.glob('./branches/**/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default',
-})
+// Automatically load branch cover/gallery images
+const branchFiles = import.meta.glob(
+  './branches/**/*.{jpg,jpeg,png,webp}',
+  {
+    eager: true,
+    import: 'default',
+  }
+)
 
 const getBranchFile = (branch, fileBase) => {
   const match = Object.entries(branchFiles).find(([path]) => {
-    const fileName = path.split('/').pop()?.replace(/\.(jpg|jpeg|png|webp)$/i, '')
-    return path.includes(`/branches/${branch}/`) && fileName === String(fileBase)
+    const fileName = path
+      .split('/')
+      .pop()
+      ?.replace(/\.(jpg|jpeg|png|webp)$/i, '')
+
+    return (
+      path.includes(`/branches/${branch}/`) &&
+      fileName === String(fileBase)
+    )
   })
+
   return match?.[1] || hero2
 }
 
-const getGallery = (branch) => Array.from({ length: 10 }, (_, i) => getBranchFile(branch, i + 1))
+const getGallery = (branch) =>
+  Array.from(
+    { length: 10 },
+    (_, i) => getBranchFile(branch, i + 1)
+  )
 
-export { hero1, hero2, hero3, hero4 }
-export { about1, about2, about3, about4 }
-export { logo, logoWhite, favicon }
+// Hero images
+export {
+  hero1,
+  hero2,
+  hero3,
+  hero4,
+}
+
+// About image
+export {
+  about1,
+}
+
+// Branding
+export {
+  logo,
+  logoWhite,
+  favicon,
+}
+
+// Facility / social icons
 export {
   wifiIcon,
   securityIcon,
@@ -73,15 +106,43 @@ export {
   instagramIcon,
   whatsappIcon,
 }
-export { singleRoom, doubleRoom, tripleRoom, fourBedRoom, nightStayRoom }
-export { student1, student2, student3, student4, student5, student6 }
 
+// Room images
+export {
+  singleRoom,
+  doubleRoom,
+  tripleRoom,
+  fourBedRoom,
+  nightStayRoom,
+}
+
+// Review images
+export {
+  student1,
+  student2,
+  student3,
+  student4,
+  student5,
+  student6,
+}
+
+// Contact section uses about1
 export const contactOffice = about1
-export const headOfficeCover = getBranchFile('head-office', 'cover')
-export const piaRoadCover = getBranchFile('pia-road', 'cover')
-export const iqbalTownCover = getBranchFile('iqbal-town', 'cover')
-export const aliTownCover = getBranchFile('ali-town', 'cover')
 
+// Branch cover images
+export const headOfficeCover =
+  getBranchFile('head-office', 'cover')
+
+export const piaRoadCover =
+  getBranchFile('pia-road', 'cover')
+
+export const iqbalTownCover =
+  getBranchFile('iqbal-town', 'cover')
+
+export const aliTownCover =
+  getBranchFile('ali-town', 'cover')
+
+// Branch galleries
 export const branchGalleries = {
   headOffice: getGallery('head-office'),
   piaRoad: getGallery('pia-road'),

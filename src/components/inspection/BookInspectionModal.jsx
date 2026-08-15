@@ -3,7 +3,7 @@ import branches from '../../data/branches.js'
 
 // Replace this with the WhatsApp number that should receive inspection requests.
 // Use international format without +, spaces, or dashes. Example: 923001234567
-const WHATSAPP_NUMBER = '923294234986'
+const WHATSAPP_NUMBER = '923193815068'
 
 const initialForm = {
   fullName: '',

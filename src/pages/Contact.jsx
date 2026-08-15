@@ -26,8 +26,8 @@ export default function Contact() {
             </div>
 
             <div className="space-y-3 text-sm text-charcoal/80">
-              <a href="https://wa.me/923294234986" target="_blank" rel="noopener noreferrer" className="contact-row">
-                <span>📱</span><div><small>Call or WhatsApp</small><b>0329-4234986</b></div>
+              <a href="https://wa.me/923193815068" target="_blank" rel="noopener noreferrer" className="contact-row">
+                <span>📱</span><div><small>Call or WhatsApp</small><b>0319-3815068</b></div>
               </a>
               {contactEmails.map((item) => (
                 <a key={item.email} href={`mailto:${item.email}`} className="contact-row">

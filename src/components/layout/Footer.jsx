@@ -90,7 +90,7 @@ export default function Footer() {
           <ul className="space-y-3 text-sm text-cream/75">
             <li className="flex items-center gap-2.5">
               <span className="text-amber">{icon.phone}</span>
-              <a href="https://wa.me/923294234986" className="hover:text-amber transition-colors">0329-4234986</a>
+              <a href="https://wa.me/923193815068" className="hover:text-amber transition-colors">0319-3815068</a>
             </li>
             <li className="flex items-center gap-2.5">
               <span className="text-amber">{icon.calendar}</span>
