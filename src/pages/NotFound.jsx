@@ -1,2 +1,25 @@
 import Button from '../components/common/Button.jsx'
-export default function NotFound(){return <section className="min-h-[65vh] flex items-center justify-center px-6 text-center"><div><p className="text-8xl font-display font-extrabold text-amber/30">404</p><h1 className="text-3xl font-bold text-navy -mt-4">This page moved out.</h1><p className="text-charcoal/60 mt-3 mb-7">The page you are looking for does not exist.</p><Button to="/">Back to Home</Button></div></section>}
+import SEO from '../components/common/SEO.jsx'
+
+export default function NotFound() {
+  return (
+    <>
+      <SEO
+        title="Page Not Found | SA Group"
+        description="The requested page could not be found."
+        noIndex
+      />
+
+      <section className="min-h-[65vh] flex items-center justify-center px-6 text-center">
+        <div>
+          <p className="text-8xl font-display font-extrabold text-amber/30">404</p>
+          <h1 className="text-3xl font-bold text-navy -mt-4">This page moved out.</h1>
+          <p className="text-charcoal/60 mt-3 mb-7">
+            The page you are looking for does not exist.
+          </p>
+          <Button to="/">Back to Home</Button>
+        </div>
+      </section>
+    </>
+  )
+}

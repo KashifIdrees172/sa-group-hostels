@@ -3,12 +3,13 @@ import { Link, useLocation } from 'react-router-dom'
 import Logo from '../common/Logo.jsx'
 import MobileMenu from './MobileMenu.jsx'
 
-const links = [
-  ['About', 'about'],
-  ['Branches', 'branches'],
-  ['Amenities', 'amenities'],
-  ['Reviews', 'reviews'],
-  ['Contact', 'contact'],
+const navItems = [
+  { label: 'About', to: '/#about', section: 'about' },
+  { label: 'Branches', to: '/#branches', section: 'branches' },
+  { label: 'Hotels', to: '/hotels', page: true },
+  { label: 'Amenities', to: '/#amenities', section: 'amenities' },
+  { label: 'Reviews', to: '/#reviews', section: 'reviews' },
+  { label: 'Contact', to: '/#contact', section: 'contact' },
 ]
 
 export default function Navbar({ onBookInspection }) {
@@ -16,6 +17,7 @@ export default function Navbar({ onBookInspection }) {
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState('home')
   const location = useLocation()
+  const onHotelPage = location.pathname.startsWith('/hotels')
 
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 20)
@@ -25,7 +27,10 @@ export default function Navbar({ onBookInspection }) {
   }, [])
 
   useEffect(() => {
-    if (location.pathname !== '/') return undefined
+    if (location.pathname !== '/') {
+      setActive('')
+      return undefined
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -45,35 +50,54 @@ export default function Navbar({ onBookInspection }) {
     onBookInspection?.()
   }
 
+  const hotelBookingTarget = location.pathname === '/hotels'
+    ? '/hotels#hotel-list'
+    : `${location.pathname}?book=true`
+
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-cream/90 shadow-lg shadow-navy/5 backdrop-blur-xl border-b border-navy/10' : 'bg-cream/75 backdrop-blur-md'}`}>
       <div className={`max-w-7xl mx-auto flex items-center justify-between px-5 md:px-8 transition-all ${scrolled ? 'py-2.5' : 'py-4'}`}>
-        <Link to="/#home" className="group flex items-center gap-3" aria-label="SA Group of Hostels home">
+        <Link to="/#home" className="group flex items-center gap-3" aria-label="SA Group home">
           <div className="transition-transform duration-300 group-hover:rotate-1 group-hover:scale-105">
             <Logo size={58} animated={false} />
           </div>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-7" aria-label="Primary navigation">
-          {links.map(([label, id]) => (
-            <Link
-              key={id}
-              to={`/#${id}`}
-              className={`nav-underline text-sm font-semibold transition-colors ${active === id ? 'active text-navy' : 'text-charcoal/65 hover:text-navy'}`}
-            >
-              {label}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const isActive = item.page
+              ? location.pathname.startsWith(item.to)
+              : location.pathname === '/' && active === item.section
+
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={`nav-underline text-sm font-semibold transition-colors ${isActive ? 'active text-navy' : 'text-charcoal/65 hover:text-navy'}`}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
         </nav>
 
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={openInspection}
-            className="hidden sm:inline-flex items-center justify-center gap-2 rounded-full border border-navy bg-navy px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-amber hover:text-navy hover:border-amber hover:shadow-lg active:translate-y-0"
-          >
-            Book Inspection <span aria-hidden="true">→</span>
-          </button>
+          {onHotelPage ? (
+            <Link
+              to={hotelBookingTarget}
+              className="hidden sm:inline-flex items-center justify-center gap-2 rounded-full border border-navy bg-navy px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-amber hover:text-navy hover:border-amber hover:shadow-lg active:translate-y-0"
+            >
+              Book Hotel <span aria-hidden="true">→</span>
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={openInspection}
+              className="hidden sm:inline-flex items-center justify-center gap-2 rounded-full border border-navy bg-navy px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-amber hover:text-navy hover:border-amber hover:shadow-lg active:translate-y-0"
+            >
+              Book Inspection <span aria-hidden="true">→</span>
+            </button>
+          )}
 
           <button
             type="button"

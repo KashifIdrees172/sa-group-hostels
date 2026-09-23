@@ -7,6 +7,7 @@ import AmenitiesList from '../components/branch/AmenitiesList.jsx'
 import MapEmbed from '../components/common/MapEmbed.jsx'
 import Button from '../components/common/Button.jsx'
 import Reveal from '../components/common/Reveal.jsx'
+import SEO from '../components/common/SEO.jsx'
 
 export default function BranchDetail() {
   const { branchId } = useParams()
@@ -21,8 +22,34 @@ export default function BranchDetail() {
     )
   }
 
+  const branchDescription = `${branch.name} in ${branch.location}. View hostel room prices, facilities, gallery and location, then book an inspection with SA Group.`
+
+  const branchSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'LodgingBusiness',
+    name: branch.name,
+    description: branch.description,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Lahore',
+      addressCountry: 'PK',
+      streetAddress: branch.location,
+    },
+    telephone: '+92-319-3815068',
+    priceRange: 'PKR',
+    image: branch.coverImage,
+  }
+
   return (
     <div className="page-enter">
+      <SEO
+        title={`${branch.name} | Hostel in Lahore`}
+        description={branchDescription}
+        path={`/branches/${branch.id}`}
+        image={branch.coverImage}
+        type="business.business"
+        schema={branchSchema}
+      />
 
       {/* HERO BANNER */}
       <section className="relative bg-navy min-h-[430px] flex items-center overflow-hidden">

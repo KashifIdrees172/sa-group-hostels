@@ -7,6 +7,7 @@ const navItems = [
   { label: 'Home', to: '/#home', id: 'home' },
   { label: 'About', to: '/#about', id: 'about' },
   { label: 'Branches', to: '/#branches', id: 'branches' },
+  { label: 'Hotels', to: '/hotels', id: 'hotels', page: true },
   { label: 'Amenities', to: '/#amenities', id: 'amenities' },
   { label: 'Reviews', to: '/#reviews', id: 'reviews' },
   { label: 'Contact', to: '/#contact', id: 'contact' },
@@ -104,7 +105,9 @@ export default function MobileMenu({ open, onClose, onBookInspection }) {
 
           <nav className="mt-3 space-y-1" aria-label="Mobile navigation links">
             {navItems.map((item, index) => {
-              const active = location.pathname === '/' && currentHash === item.id
+              const active = item.page
+                ? location.pathname.startsWith(item.to)
+                : location.pathname === '/' && currentHash === item.id
 
               return (
                 <Link
@@ -150,7 +153,7 @@ export default function MobileMenu({ open, onClose, onBookInspection }) {
             >
               <span>
                 <span className="block text-xs font-bold text-navy">Call Reception</span>
-                <span className="mt-0.5 block text-xs text-charcoal/50">+92 300 0000000</span>
+                <span className="mt-0.5 block text-xs text-charcoal/50">0319-3815068</span>
               </span>
               <span className="grid h-9 w-9 place-items-center rounded-full bg-amber/15 text-navy">☎</span>
             </a>

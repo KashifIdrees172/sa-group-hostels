@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import Navbar from './Navbar.jsx'
 import Footer from './Footer.jsx'
 import FloatingActions from '../common/FloatingActions.jsx'
@@ -8,17 +9,50 @@ import BookInspectionModal from '../inspection/BookInspectionModal.jsx'
 
 export default function Layout({ children }) {
   const [inspectionOpen, setInspectionOpen] = useState(false)
-  const closeInspection = useCallback(() => setInspectionOpen(false), [])
+  const closeInspection = useCallback(
+    () => setInspectionOpen(false),
+    [],
+  )
+
+  const location = useLocation()
+  const isAdminArea = location.pathname.startsWith('/admin')
+
+  if (isAdminArea) {
+    return (
+      <div className="min-h-screen">
+        <ScrollManager />
+        {children}
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col overflow-hidden">
       <ScrollManager />
       <ScrollProgress />
-      <Navbar onBookInspection={() => setInspectionOpen(true)} />
-      <main className="flex-1">{children}</main>
+
+      <Navbar
+        onBookInspection={() =>
+          setInspectionOpen(true)
+        }
+      />
+
+      <main className="flex-1">
+        {children}
+      </main>
+
       <Footer />
-      <FloatingActions onBookInspection={() => setInspectionOpen(true)} />
-      <BookInspectionModal open={inspectionOpen} onClose={closeInspection} />
+
+      <FloatingActions
+        onBookInspection={() =>
+          setInspectionOpen(true)
+        }
+      />
+
+      <BookInspectionModal
+        open={inspectionOpen}
+        onClose={closeInspection}
+      />
     </div>
   )
 }

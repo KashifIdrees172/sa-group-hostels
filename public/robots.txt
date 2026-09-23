@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sa-group-hostels.vercel.app/sitemap.xml

@@ -8,6 +8,7 @@ import AmenitiesList from '../components/branch/AmenitiesList.jsx'
 import ReviewsSlider from '../components/reviews/ReviewsSlider.jsx'
 import ContactForm from '../components/common/ContactForm.jsx'
 import SocialLinks from '../components/common/SocialLinks.jsx'
+import SEO from '../components/common/SEO.jsx'
 import branches from '../data/branches.js'
 import { generalAmenities, studentPerks } from '../data/amenities.js'
 import reviews from '../data/reviews.js'
@@ -34,8 +35,36 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
+  const homeSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'SA Group of Hotels & Hostels',
+    alternateName: 'SA Group',
+    description:
+      'Affordable hotels and student hostels in Lahore with secure accommodation, flexible room options, parking, and convenient locations.',
+    telephone: '+92-319-3815068',
+    email: 'info@sagrouphostels.com',
+    areaServed: {
+      '@type': 'City',
+      name: 'Lahore',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+92-319-3815068',
+      contactType: 'reservations',
+      areaServed: 'PK',
+      availableLanguage: ['English', 'Urdu'],
+    },
+  }
+
   return (
     <div className="page-enter">
+      <SEO
+        title="Hotels & Hostels in Lahore | SA Group"
+        description="SA Group offers affordable hotels and student hostels in Lahore with secure rooms, flexible stays, parking, facilities and easy booking."
+        path="/"
+        schema={homeSchema}
+      />
       <section
         id="home"
         className="relative min-h-[calc(100vh-78px)] flex items-center overflow-hidden scroll-mt-24 hero-mesh"

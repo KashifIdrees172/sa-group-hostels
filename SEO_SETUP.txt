@@ -1,0 +1,24 @@
+SEO UPDATE - IMPORTANT
+
+1. Replace the matching files in your project.
+2. No new npm package is required.
+3. Current canonical/sitemap domain is:
+   https://sa-group-hostels.vercel.app
+
+When your custom domain is connected:
+- Create .env from .env.example and set VITE_SITE_URL=https://yourdomain.com
+- Also replace the Vercel URL in:
+  index.html
+  public/robots.txt
+  public/sitemap.xml
+
+4. Run:
+   npm run dev
+   npm run build
+
+5. After deployment, submit:
+   /sitemap.xml
+to Google Search Console.
+
+Note:
+This significantly improves a Vite SPA's technical SEO, but full server-rendered/pre-rendered HTML (e.g. Next.js or prerendering) is stronger for non-Google crawlers and maximum SEO.
