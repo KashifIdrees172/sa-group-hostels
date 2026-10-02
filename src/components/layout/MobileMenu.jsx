@@ -7,7 +7,6 @@ const navItems = [
   { label: 'Home', to: '/#home', id: 'home' },
   { label: 'About', to: '/#about', id: 'about' },
   { label: 'Branches', to: '/#branches', id: 'branches' },
-  { label: 'Hotels', to: '/hotels', id: 'hotels', page: true },
   { label: 'Amenities', to: '/#amenities', id: 'amenities' },
   { label: 'Reviews', to: '/#reviews', id: 'reviews' },
   { label: 'Contact', to: '/#contact', id: 'contact' },
@@ -101,7 +100,34 @@ export default function MobileMenu({ open, onClose, onBookInspection }) {
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-5">
-          <p className="px-3 text-[10px] font-extrabold uppercase tracking-[.24em] text-charcoal/40">Navigation</p>
+          <p className="px-3 text-[10px] font-extrabold uppercase tracking-[.24em] text-charcoal/40">Choose your stay</p>
+
+          <div className="mt-3 grid grid-cols-2 gap-2 px-1">
+            <Link
+              to="/#choose"
+              onClick={onClose}
+              className={`rounded-2xl border px-3 py-3 text-center text-sm font-bold transition-all ${
+                location.pathname === '/'
+                  ? 'border-navy bg-navy text-white shadow-sm'
+                  : 'border-navy/10 bg-white text-charcoal/60 hover:border-navy/30'
+              }`}
+            >
+              🏠 Hostels
+            </Link>
+            <Link
+              to="/hotels"
+              onClick={onClose}
+              className={`rounded-2xl border px-3 py-3 text-center text-sm font-bold transition-all ${
+                location.pathname.startsWith('/hotels')
+                  ? 'border-amber bg-amber text-navy shadow-sm'
+                  : 'border-navy/10 bg-white text-charcoal/60 hover:border-navy/30'
+              }`}
+            >
+              🏨 Hotels
+            </Link>
+          </div>
+
+          <p className="mt-6 px-3 text-[10px] font-extrabold uppercase tracking-[.24em] text-charcoal/40">Navigation</p>
 
           <nav className="mt-3 space-y-1" aria-label="Mobile navigation links">
             {navItems.map((item, index) => {

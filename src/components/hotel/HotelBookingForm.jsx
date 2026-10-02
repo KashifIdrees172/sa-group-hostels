@@ -815,9 +815,9 @@ export default function HotelBookingForm({
               </strong>
             </p>
             <p className="mt-1 text-green-700/75">
-              The booking is now
-              visible in the admin
-              dashboard as Pending.
+              Our team will contact
+              you shortly to confirm
+              your stay.
             </p>
           </div>
         )}

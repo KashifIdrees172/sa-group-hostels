@@ -94,27 +94,36 @@ h1, h2, h3, h4 {
 body { overflow-x: hidden; background-image: radial-gradient(circle at 10% 10%, rgba(240,168,60,.06), transparent 24%), radial-gradient(circle at 90% 35%, rgba(21,42,82,.05), transparent 26%); }
 ::selection { background: #F0A83C; color: #152A52; }
 .section-shell { @apply max-w-7xl mx-auto px-6 py-24; }
-.section-eyebrow { @apply text-amber-dark font-bold text-xs tracking-[.25em] uppercase text-center mb-3; }
-.section-title { @apply text-3xl md:text-5xl font-bold text-navy text-center; }
-.section-line { @apply w-16 h-1 bg-amber rounded-full mx-auto mt-5; }
+.section-eyebrow { @apply inline-flex items-center gap-2 text-amber-dark font-bold text-[11px] tracking-[.25em] uppercase mb-4 bg-amber/10 border border-amber/25 rounded-full px-4 py-1.5; }
+.section-eyebrow-wrap { @apply flex justify-center; }
+.section-title { @apply text-3xl md:text-[2.75rem] font-bold text-navy text-center tracking-tight leading-[1.12]; }
+.section-line { @apply w-16 h-1 bg-gradient-to-r from-amber to-amber-dark rounded-full mx-auto mt-5; }
 .section-copy { @apply text-charcoal/60 text-center mt-5 max-w-2xl mx-auto leading-relaxed; }
 .text-gradient { background: linear-gradient(100deg,#F0A83C,#d57b13); -webkit-background-clip:text; color:transparent; }
-.hero-mesh { background: linear-gradient(135deg,#fdfdfc 20%,#fff8ea 65%,#eef3fb); }
+.hero-mesh { background: radial-gradient(circle at 15% 0%, rgba(240,168,60,.10), transparent 45%), radial-gradient(circle at 100% 20%, rgba(21,42,82,.08), transparent 45%), linear-gradient(160deg,#fdfdfc 10%,#fff9ec 55%,#eef3fb 100%); }
 .grid-pattern { background-image: linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px); background-size:28px 28px; }
-.orb { position:absolute; border-radius:9999px; filter:blur(2px); opacity:.45; animation:drift 8s ease-in-out infinite; }
-.orb-one { width:260px;height:260px;background:rgba(240,168,60,.22);top:10%;left:-100px; }
-.orb-two { width:340px;height:340px;background:rgba(21,42,82,.12);right:-130px;bottom:5%;animation-delay:-3s; }
+.orb { position:absolute; border-radius:9999px; filter:blur(40px); opacity:.5; animation:drift 9s ease-in-out infinite; }
+.orb-one { width:280px;height:280px;background:rgba(240,168,60,.28);top:8%;left:-110px; }
+.orb-two { width:360px;height:360px;background:rgba(21,42,82,.14);right:-140px;bottom:0%;animation-delay:-3s; }
+.glass-panel { @apply bg-white/75 backdrop-blur-xl border border-white/70 shadow-[0_8px_30px_rgba(21,42,82,.08)]; }
+.chip { @apply inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white px-4 py-2 text-xs font-bold text-navy shadow-sm; }
+.stat-card { @apply relative overflow-hidden rounded-2xl border border-navy/10 bg-white px-4 py-8 text-center transition-all duration-300 hover:-translate-y-1.5 hover:border-amber/30 hover:shadow-xl hover:shadow-navy/10; }
+.stat-card::before { content:''; position:absolute; inset:0 0 auto 0; height:3px; background:linear-gradient(90deg,#F0A83C,#152A52); transform:scaleX(0); transform-origin:left; transition:transform .4s ease; }
+.stat-card:hover::before { transform:scaleX(1); }
 @keyframes drift { 50% { transform:translate(25px,-18px) scale(1.08); } }
 .hero-rise { animation:heroRise .75s both cubic-bezier(.2,.8,.2,1); }
 .delay-1{animation-delay:.08s}.delay-2{animation-delay:.16s}.delay-3{animation-delay:.24s}.delay-4{animation-delay:.32s}
 @keyframes heroRise { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:none} }
 .pulse-dot { box-shadow:0 0 0 0 rgba(240,168,60,.55); animation:pulseRing 2s infinite; }
 @keyframes pulseRing { 70%{box-shadow:0 0 0 9px rgba(240,168,60,0)}100%{box-shadow:0 0 0 0 rgba(240,168,60,0)} }
-.float-card { @apply absolute flex items-center gap-3 bg-white/90 backdrop-blur rounded-2xl p-4 shadow-xl border border-white; animation:floatCard 4s ease-in-out infinite; }
+.float-card { @apply absolute flex items-center gap-3 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-[0_16px_40px_-8px_rgba(21,42,82,.35)] border border-white z-20; animation:floatCard 4s ease-in-out infinite; }
 .float-card b { @apply block text-sm text-navy; }.float-card small { @apply block text-[10px] text-charcoal/50 mt-0.5; }.animation-delay{animation-delay:-2s}
 @keyframes floatCard { 50%{transform:translateY(-10px)} }
 .check-dot { @apply w-5 h-5 rounded-full bg-amber/15 text-amber-dark flex items-center justify-center text-xs font-bold; }
-.feature-pill { @apply flex items-center gap-3 rounded-xl bg-white border border-navy/10 p-3 text-sm text-charcoal/70 hover:border-amber/50 hover:-translate-y-0.5 transition-all; }.feature-pill span{@apply w-6 h-6 rounded-full bg-amber/15 text-amber-dark flex items-center justify-center font-bold;}
+.feature-pill { @apply flex items-center gap-3 rounded-xl bg-white border border-navy/10 p-3 text-sm text-charcoal/70 hover:border-amber/50 hover:-translate-y-0.5 hover:shadow-md transition-all; }.feature-pill span{@apply w-6 h-6 rounded-full bg-amber/15 text-amber-dark flex items-center justify-center font-bold flex-shrink-0;}
+.rating-card { @apply absolute flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-[0_16px_40px_-8px_rgba(21,42,82,.35)] border border-white z-20; }
+.star-row { @apply flex text-amber text-xs gap-0.5; }
+.hero-image-ring { box-shadow: 0 0 0 1px rgba(255,255,255,.7), 0 30px 60px -20px rgba(21,42,82,.45); }
 .branch-gradient-0{background:linear-gradient(135deg,#152A52,#2c5b9e)}.branch-gradient-1{background:linear-gradient(135deg,#7c4b16,#F0A83C)}.branch-gradient-2{background:linear-gradient(135deg,#173f38,#3b897a)}.branch-gradient-3{background:linear-gradient(135deg,#55366d,#9673b3)}
 .carousel-btn { @apply w-10 h-10 rounded-full border border-navy/15 bg-white text-navy hover:bg-navy hover:text-white hover:scale-105 active:scale-95 transition-all shadow-sm; }
 .contact-row { @apply flex items-center gap-3 p-3 rounded-xl hover:bg-white transition-colors; }.contact-row>span{@apply w-10 h-10 rounded-xl bg-amber/15 flex items-center justify-center}.contact-row small{@apply block text-charcoal/45}.contact-row b{@apply block text-navy mt-0.5}

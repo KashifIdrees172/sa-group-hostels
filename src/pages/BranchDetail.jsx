@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import branches from '../data/branches.js'
+import defaultBranches from '../data/branches.js'
+import { getBranchById } from '../services/branchService.js'
 import { generalAmenities, studentPerks } from '../data/amenities.js'
 import BranchGallery from '../components/branch/BranchGallery.jsx'
 import BedPricingTable from '../components/branch/BedPricingTable.jsx'
@@ -11,7 +13,26 @@ import SEO from '../components/common/SEO.jsx'
 
 export default function BranchDetail() {
   const { branchId } = useParams()
-  const branch = branches.find((b) => b.id === branchId)
+
+  // Show the default location immediately; swap in the admin-set
+  // location once it loads, if one has been saved.
+  const [branch, setBranch] = useState(() =>
+    defaultBranches.find((b) => b.id === branchId),
+  )
+
+  useEffect(() => {
+    let active = true
+
+    setBranch(defaultBranches.find((b) => b.id === branchId))
+
+    getBranchById(branchId).then((data) => {
+      if (active && data) setBranch(data)
+    })
+
+    return () => {
+      active = false
+    }
+  }, [branchId])
 
   if (!branch) {
     return (

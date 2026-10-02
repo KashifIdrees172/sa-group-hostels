@@ -6,7 +6,6 @@ import MobileMenu from './MobileMenu.jsx'
 const navItems = [
   { label: 'About', to: '/#about', section: 'about' },
   { label: 'Branches', to: '/#branches', section: 'branches' },
-  { label: 'Hotels', to: '/hotels', page: true },
   { label: 'Amenities', to: '/#amenities', section: 'amenities' },
   { label: 'Reviews', to: '/#reviews', section: 'reviews' },
   { label: 'Contact', to: '/#contact', section: 'contact' },
@@ -62,6 +61,21 @@ export default function Navbar({ onBookInspection }) {
             <Logo size={58} animated={false} />
           </div>
         </Link>
+
+        <div className="hidden lg:flex items-center rounded-full border border-navy/12 bg-white/70 p-1 text-xs font-bold">
+          <Link
+            to="/#choose"
+            className={`rounded-full px-4 py-2 transition-all duration-200 ${!onHotelPage ? 'bg-navy text-white shadow-sm' : 'text-charcoal/60 hover:text-navy'}`}
+          >
+            Hostels
+          </Link>
+          <Link
+            to="/hotels"
+            className={`rounded-full px-4 py-2 transition-all duration-200 ${onHotelPage ? 'bg-amber text-navy shadow-sm' : 'text-charcoal/60 hover:text-navy'}`}
+          >
+            Hotels
+          </Link>
+        </div>
 
         <nav className="hidden lg:flex items-center gap-7" aria-label="Primary navigation">
           {navItems.map((item) => {

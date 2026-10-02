@@ -7,13 +7,16 @@ import { useNavigate } from 'react-router-dom'
 import {
   adminLogout,
   getAdminBookings,
+  getAdminBranchLocations,
   getAdminHotels,
   updateBookingStatus,
+  updateBranchLocation,
   updateHotel,
   updateParkingCapacity,
   updateRoomType,
 } from '../../services/adminService.js'
 import Logo from '../../components/common/Logo.jsx'
+import localBranches from '../../data/branches.js'
 
 const STATUS_OPTIONS = [
   'pending',
@@ -120,6 +123,250 @@ function NumberField({
         )}
       </div>
     </label>
+  )
+}
+
+function TextField({
+  label,
+  value,
+  placeholder,
+  onChange,
+}) {
+  return (
+    <label className="block">
+      <span className="block text-xs font-bold uppercase tracking-wide text-charcoal/45 mb-2">
+        {label}
+      </span>
+
+      <input
+        type="text"
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+        className="w-full rounded-xl border border-navy/15 bg-white px-3 py-3 text-sm font-semibold text-navy outline-none transition focus:border-amber focus:ring-4 focus:ring-amber/10"
+      />
+    </label>
+  )
+}
+
+function LocationsModule({
+  hotels,
+  branchLocations,
+  onReload,
+}) {
+  const [drafts, setDrafts] =
+    useState({})
+  const [savingKey, setSavingKey] =
+    useState('')
+  const [message, setMessage] =
+    useState('')
+  const [error, setError] =
+    useState('')
+
+  useEffect(() => {
+    const next = {}
+
+    hotels.forEach((hotel) => {
+      next[`hotel-${hotel.id}`] =
+        hotel.location || ''
+    })
+
+    localBranches.forEach((branch) => {
+      const override =
+        branchLocations.find(
+          (row) => row.id === branch.id,
+        )
+
+      next[`branch-${branch.id}`] =
+        override?.location ||
+        branch.location ||
+        ''
+    })
+
+    setDrafts(next)
+  }, [hotels, branchLocations])
+
+  const setDraftValue = (key, value) => {
+    setDrafts((current) => ({
+      ...current,
+      [key]: value,
+    }))
+    setMessage('')
+    setError('')
+  }
+
+  const saveHotelLocation = async (hotel) => {
+    const key = `hotel-${hotel.id}`
+    const location = drafts[key] ?? ''
+
+    setSavingKey(key)
+    setMessage('')
+    setError('')
+
+    try {
+      await updateHotel(hotel.id, { location })
+      setMessage(`${hotel.name} location updated.`)
+      await onReload()
+    } catch (saveError) {
+      console.error('Hotel location update failed:', saveError)
+      setError(
+        saveError?.message ||
+          'Unable to update hotel location.',
+      )
+    } finally {
+      setSavingKey('')
+    }
+  }
+
+  const saveBranchLocation = async (branch) => {
+    const key = `branch-${branch.id}`
+    const location = drafts[key] ?? ''
+
+    setSavingKey(key)
+    setMessage('')
+    setError('')
+
+    try {
+      await updateBranchLocation(branch.id, location)
+      setMessage(`${branch.name} location updated.`)
+      await onReload()
+    } catch (saveError) {
+      console.error('Branch location update failed:', saveError)
+      setError(
+        saveError?.message ||
+          'Unable to update hostel location. Make sure the "branches" table exists in Supabase (see supabase/branches_table.sql).',
+      )
+    } finally {
+      setSavingKey('')
+    }
+  }
+
+  return (
+    <div className="space-y-8">
+      {(message || error) && (
+        <div
+          className={`rounded-xl border px-4 py-3 text-sm ${
+            error
+              ? 'border-red-200 bg-red-50 text-red-700'
+              : 'border-green-200 bg-green-50 text-green-800'
+          }`}
+        >
+          {error || message}
+        </div>
+      )}
+
+      <section className="overflow-hidden rounded-3xl border border-navy/10 bg-white shadow-sm">
+        <div className="bg-navy px-5 sm:px-6 py-5 text-white">
+          <p className="text-[10px] uppercase tracking-[.2em] font-extrabold text-amber">
+            Hotels
+          </p>
+          <h3 className="mt-1 text-xl font-display font-bold">
+            Hotel locations
+          </h3>
+          <p className="mt-1 text-xs text-white/50">
+            Shown on the Hotels page and each hotel's page. Leave blank to keep the default.
+          </p>
+        </div>
+
+        <div className="p-5 sm:p-6 grid sm:grid-cols-2 gap-5">
+          {hotels.length === 0 && (
+            <p className="text-sm text-charcoal/50">
+              No hotels found yet.
+            </p>
+          )}
+
+          {hotels.map((hotel) => {
+            const key = `hotel-${hotel.id}`
+
+            return (
+              <div
+                key={hotel.id}
+                className="rounded-2xl border border-navy/10 bg-[#f9fbfd] p-5"
+              >
+                <h4 className="font-display font-bold text-navy">
+                  {hotel.name}
+                </h4>
+
+                <div className="mt-4">
+                  <TextField
+                    label="Location"
+                    value={drafts[key] ?? ''}
+                    placeholder="e.g. Gulberg, Lahore"
+                    onChange={(event) =>
+                      setDraftValue(key, event.target.value)
+                    }
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => saveHotelLocation(hotel)}
+                  disabled={savingKey === key}
+                  className="mt-4 w-full rounded-xl bg-navy px-4 py-2.5 text-sm font-bold text-white transition hover:bg-amber hover:text-navy disabled:opacity-60"
+                >
+                  {savingKey === key ? 'Saving...' : 'Save Location'}
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      <section className="overflow-hidden rounded-3xl border border-navy/10 bg-white shadow-sm">
+        <div className="bg-navy px-5 sm:px-6 py-5 text-white">
+          <p className="text-[10px] uppercase tracking-[.2em] font-extrabold text-amber">
+            Hostels
+          </p>
+          <h3 className="mt-1 text-xl font-display font-bold">
+            Hostel branch locations
+          </h3>
+          <p className="mt-1 text-xs text-white/50">
+            Shown on the homepage branches section and each branch's page. Until you save one here, the branch keeps showing its default location.
+          </p>
+        </div>
+
+        <div className="p-5 sm:p-6 grid sm:grid-cols-2 gap-5">
+          {localBranches.map((branch) => {
+            const key = `branch-${branch.id}`
+
+            return (
+              <div
+                key={branch.id}
+                className="rounded-2xl border border-navy/10 bg-[#f9fbfd] p-5"
+              >
+                <h4 className="font-display font-bold text-navy">
+                  {branch.name}
+                </h4>
+
+                <p className="mt-1 text-xs text-charcoal/40">
+                  Default: {branch.location}
+                </p>
+
+                <div className="mt-4">
+                  <TextField
+                    label="Location"
+                    value={drafts[key] ?? ''}
+                    placeholder={branch.location}
+                    onChange={(event) =>
+                      setDraftValue(key, event.target.value)
+                    }
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => saveBranchLocation(branch)}
+                  disabled={savingKey === key}
+                  className="mt-4 w-full rounded-xl bg-navy px-4 py-2.5 text-sm font-bold text-white transition hover:bg-amber hover:text-navy disabled:opacity-60"
+                >
+                  {savingKey === key ? 'Saving...' : 'Save Location'}
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+    </div>
   )
 }
 
@@ -689,6 +936,9 @@ export default function AdminDashboard() {
   const [hotels, setHotels] =
     useState([])
 
+  const [branchLocations, setBranchLocations] =
+    useState([])
+
   const [loading, setLoading] =
     useState(true)
 
@@ -717,15 +967,24 @@ export default function AdminDashboard() {
         const [
           bookingData,
           hotelData,
+          branchLocationData,
         ] = await Promise.all([
           getAdminBookings(),
           getAdminHotels(),
+          getAdminBranchLocations().catch((locationError) => {
+            console.warn(
+              'Branch locations unavailable (has supabase/branches_table.sql been run yet?):',
+              locationError?.message || locationError,
+            )
+            return []
+          }),
         ])
 
         setBookings(
           bookingData,
         )
         setHotels(hotelData)
+        setBranchLocations(branchLocationData)
       } catch (loadError) {
         console.error(
           'Unable to load admin dashboard:',
@@ -1001,6 +1260,23 @@ export default function AdminDashboard() {
           >
             Rooms & Parking
           </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setActiveTab(
+                'locations',
+              )
+            }
+            className={`rounded-xl px-5 py-3 text-sm font-bold transition ${
+              activeTab ===
+              'locations'
+                ? 'bg-navy text-white shadow-sm'
+                : 'text-navy hover:bg-cream'
+            }`}
+          >
+            Locations
+          </button>
         </div>
 
         {loading ? (
@@ -1016,6 +1292,19 @@ export default function AdminDashboard() {
           <div className="mt-6">
             <InventoryModule
               hotels={hotels}
+              onReload={() =>
+                loadDashboardData(
+                  true,
+                )
+              }
+            />
+          </div>
+        ) : activeTab ===
+          'locations' ? (
+          <div className="mt-6">
+            <LocationsModule
+              hotels={hotels}
+              branchLocations={branchLocations}
               onReload={() =>
                 loadDashboardData(
                   true,

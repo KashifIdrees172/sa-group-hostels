@@ -263,6 +263,48 @@ export async function updateRoomType(
   return data
 }
 
+/* ============================================================
+   HOSTEL / BRANCH LOCATION MANAGEMENT
+   ============================================================ */
+
+export async function getAdminBranchLocations() {
+  const { data, error } = await supabase
+    .from('branches')
+    .select('id, location, updated_at')
+
+  if (error) {
+    throw error
+  }
+
+  return data ?? []
+}
+
+export async function updateBranchLocation(
+  branchId,
+  location,
+) {
+  const { data, error } = await supabase
+    .from('branches')
+    .upsert(
+      {
+        id: branchId,
+        location: location?.trim() || null,
+        updated_at: new Date().toISOString(),
+      },
+      {
+        onConflict: 'id',
+      },
+    )
+    .select()
+    .single()
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+
 export async function updateParkingCapacity(
   hotelId,
   totalSlots,

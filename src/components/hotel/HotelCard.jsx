@@ -164,6 +164,24 @@ export default function HotelCard({ hotel }) {
           </div>
         </div>
 
+        {hotel.facilities?.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-6">
+            {hotel.facilities.slice(0, 4).map((facility) => (
+              <span
+                key={facility}
+                className="rounded-full border border-navy/10 bg-cream/70 px-3 py-1.5 text-[11px] font-semibold text-charcoal/60"
+              >
+                {facility}
+              </span>
+            ))}
+            {hotel.facilities.length > 4 && (
+              <span className="rounded-full border border-navy/10 bg-cream/70 px-3 py-1.5 text-[11px] font-semibold text-charcoal/45">
+                +{hotel.facilities.length - 4} more
+              </span>
+            )}
+          </div>
+        )}
+
         {/* ROOM IMAGES */}
         <div className="mt-6">
           <p className="text-[10px] font-extrabold uppercase tracking-[.18em] text-amber">

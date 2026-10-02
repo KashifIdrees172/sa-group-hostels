@@ -160,9 +160,11 @@ export default function HotelDetail() {
   if (!hotel) {
     return (
       <section className="section-shell text-center">
-        <p className="section-eyebrow">
-          Hotel not found
-        </p>
+        <div className="section-eyebrow-wrap">
+          <p className="section-eyebrow">
+            Hotel not found
+          </p>
+        </div>
 
         <h1 className="section-title">
           This hotel branch is not
@@ -203,9 +205,10 @@ export default function HotelDetail() {
               ← All Hotels
             </Link>
 
-            <p className="mt-7 text-amber text-xs font-bold uppercase tracking-[.24em]">
+            <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[.2em] text-amber">
+              <span className="w-1.5 h-1.5 bg-amber rounded-full pulse-dot" />
               SA Group Hotels
-            </p>
+            </div>
 
             <h1 className="mt-3 text-4xl md:text-6xl font-display font-extrabold leading-tight">
               {hotel.name}
@@ -290,9 +293,11 @@ export default function HotelDetail() {
 
       <section className="section-shell">
         <Reveal>
-          <p className="section-eyebrow">
-            Availability
-          </p>
+          <div className="section-eyebrow-wrap">
+            <p className="section-eyebrow">
+              Availability
+            </p>
+          </div>
 
           <h2 className="section-title">
             Rooms & parking at a
@@ -326,9 +331,11 @@ export default function HotelDetail() {
 
       <section className="section-shell pt-0">
         <Reveal>
-          <p className="section-eyebrow">
-            Room choices
-          </p>
+          <div className="section-eyebrow-wrap">
+            <p className="section-eyebrow">
+              Room choices
+            </p>
+          </div>
 
           <h2 className="section-title">
             Choose the room that

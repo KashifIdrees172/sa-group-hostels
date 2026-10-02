@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Button from '../components/common/Button.jsx'
 import Reveal from '../components/common/Reveal.jsx'
 import StatsSection from '../components/common/StatsSection.jsx'
@@ -9,14 +10,18 @@ import ReviewsSlider from '../components/reviews/ReviewsSlider.jsx'
 import ContactForm from '../components/common/ContactForm.jsx'
 import SocialLinks from '../components/common/SocialLinks.jsx'
 import SEO from '../components/common/SEO.jsx'
-import branches from '../data/branches.js'
+import defaultBranches from '../data/branches.js'
+import { getBranches } from '../services/branchService.js'
 import { generalAmenities, studentPerks } from '../data/amenities.js'
 import reviews from '../data/reviews.js'
-import { hero1, hero2, hero3, hero4, about1, contactOffice, securityIcon, studyIcon } from '../assets/images/index.js'
+import { hero1, hero2, hero3, hero4, about1, contactOffice, securityIcon, studyIcon, headOfficeCover } from '../assets/images/index.js'
+import { hotelOneCover } from '../assets/images/hotels/index.js'
 
 const SectionHeading = ({ eyebrow, title, text }) => (
   <Reveal>
-    <p className="section-eyebrow">{eyebrow}</p>
+    <div className="section-eyebrow-wrap">
+      <p className="section-eyebrow">{eyebrow}</p>
+    </div>
     <h2 className="section-title">{title}</h2>
     <div className="section-line" />
     {text && <p className="section-copy">{text}</p>}
@@ -26,6 +31,23 @@ const SectionHeading = ({ eyebrow, title, text }) => (
 export default function Home() {
   const heroImages = [hero1, hero2, hero3, hero4]
   const [activeHero, setActiveHero] = useState(0)
+  const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+
+  // Show the default branch locations immediately; if an admin has set a
+  // custom location in the dashboard, swap it in once it loads.
+  const [branches, setBranches] = useState(defaultBranches)
+
+  useEffect(() => {
+    let active = true
+
+    getBranches().then((data) => {
+      if (active) setBranches(data)
+    })
+
+    return () => {
+      active = false
+    }
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -75,12 +97,12 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-20 relative z-10 grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-14 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber/30 bg-white/70 backdrop-blur px-4 py-2 text-xs font-bold text-navy shadow-sm hero-rise">
+            <div className="chip hero-rise">
               <span className="w-2 h-2 bg-amber rounded-full pulse-dot" />
               Trusted hostel living across Lahore
             </div>
 
-            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-7xl leading-[1.08] font-extrabold text-navy hero-rise delay-1">
+            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.08] font-extrabold text-navy tracking-tight hero-rise delay-1">
               A better place to <span className="text-gradient">live, study &amp; grow.</span>
             </h1>
 
@@ -89,25 +111,32 @@ export default function Home() {
               convenient locations, and a community that feels like home.
             </p>
 
-            <div className="flex flex-wrap gap-3 mt-9 hero-rise delay-3">
-              <Button to="/#branches" variant="primary">
+            <div className="flex flex-wrap items-center gap-3 mt-9 hero-rise delay-3">
+              <Button to="/#branches" variant="primary" className="!shadow-lg !shadow-navy/20">
                 Explore Branches <span>→</span>
               </Button>
               <Button to="/#contact" variant="outline">Book an Inspection</Button>
             </div>
 
-            <div className="flex flex-wrap gap-x-7 gap-y-3 mt-9 text-sm text-charcoal/60 hero-rise delay-4">
+            <div className="flex flex-wrap items-center gap-3 mt-8 hero-rise delay-4">
               {['24/7 security', 'Student-friendly', 'Flexible rooms'].map((item) => (
-                <span key={item} className="flex items-center gap-2">
+                <span key={item} className="flex items-center gap-2 rounded-full bg-white/70 border border-navy/10 pl-1.5 pr-3.5 py-1.5 text-xs font-semibold text-charcoal/70">
                   <span className="check-dot">✓</span>
                   {item}
                 </span>
               ))}
             </div>
+
+            <div className="flex items-center gap-3 mt-7 hero-rise delay-4">
+              <div className="star-row text-sm">{'★★★★★'}</div>
+              <p className="text-sm text-charcoal/60">
+                <span className="font-bold text-navy">{avgRating}/5</span> from {reviews.length}+ resident reviews
+              </p>
+            </div>
           </div>
 
-          <div className="relative block hero-rise delay-2 mt-8 lg:mt-0">
-            <div className="relative mx-auto w-full max-w-lg aspect-[4/4.3] rounded-[2.5rem] bg-navy shadow-2xl shadow-navy/25 overflow-hidden border-8 border-white/70">
+          <div className="relative block hero-rise delay-2 mt-10 lg:mt-0">
+            <div className="relative mx-auto w-full max-w-lg aspect-[4/4.3] rounded-[2.5rem] bg-navy overflow-hidden border-8 border-white/70 hero-image-ring">
               {heroImages.map((image, index) => (
                 <img
                   key={index}
@@ -147,7 +176,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="float-card top-6 left-2 sm:top-12 sm:-left-8">
+            <div className="float-card top-4 left-1 sm:top-10 sm:-left-8">
               <img
                 src={securityIcon}
                 alt=""
@@ -160,7 +189,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="float-card bottom-8 right-2 sm:bottom-14 sm:-right-5 animation-delay">
+            <div className="float-card bottom-16 right-1 sm:bottom-24 sm:-right-6 animation-delay">
               <img
                 src={studyIcon}
                 alt=""
@@ -170,6 +199,14 @@ export default function Home() {
               <div>
                 <b>Student focused</b>
                 <small>Spaces built for progress</small>
+              </div>
+            </div>
+
+            <div className="rating-card -bottom-5 left-1/2 -translate-x-1/2 sm:left-auto sm:right-8 sm:translate-x-0">
+              <div className="star-row">{'★★★★★'}</div>
+              <div className="leading-tight">
+                <b className="block text-sm text-navy font-bold">{avgRating}/5 rating</b>
+                <small className="block text-[10px] text-charcoal/50">{reviews.length}+ verified reviews</small>
               </div>
             </div>
           </div>
@@ -182,6 +219,102 @@ export default function Home() {
         >
           ↓
         </a>
+      </section>
+
+      <section id="choose" className="section-shell pb-0 scroll-mt-24">
+        <SectionHeading
+          eyebrow="Two ways to stay"
+          title="Built for long-term living. Built for short stays too."
+          text="SA Group runs two distinct services under one trusted name — pick the one that fits your stay."
+        />
+
+        <div className="grid md:grid-cols-2 gap-6 mt-14">
+          <Reveal>
+            <Link
+              to="/#branches"
+              className="group relative flex flex-col h-full rounded-[2rem] overflow-hidden border border-navy/10 bg-white shadow-sm hover:shadow-2xl hover:shadow-navy/15 hover:-translate-y-1.5 transition-all duration-500"
+            >
+              <div className="relative h-56 sm:h-64 overflow-hidden">
+                <img
+                  src={headOfficeCover}
+                  alt="SA Group hostel branch"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent" />
+                <span className="absolute top-5 left-5 bg-amber text-navy text-[10px] font-bold px-3 py-1.5 rounded-full tracking-wide uppercase">
+                  Long-term living
+                </span>
+                <div className="absolute left-6 right-6 bottom-5 text-white">
+                  <h3 className="font-display font-extrabold text-2xl sm:text-3xl">SA Group Hostels</h3>
+                  <p className="text-white/70 text-sm mt-1">4 branches across Lahore</p>
+                </div>
+              </div>
+
+              <div className="p-6 sm:p-7 flex flex-col flex-1">
+                <p className="text-charcoal/65 leading-7">
+                  Monthly bed-based rooms for students and working professionals, with flexible
+                  sharing options, security, and a resident community.
+                </p>
+                <div className="grid grid-cols-2 gap-3 mt-6">
+                  {['Single to 4-bed rooms', 'Monthly pricing', '24/7 security', 'Student-friendly'].map((point) => (
+                    <div key={point} className="feature-pill !p-2.5 !text-xs">
+                      <span className="!w-5 !h-5 !text-[10px]">✓</span>
+                      {point}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-auto pt-6 flex items-center justify-between">
+                  <span className="font-bold text-navy">Explore Hostels</span>
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-navy text-white transition-all duration-300 group-hover:bg-amber group-hover:text-navy group-hover:rotate-[-35deg]">→</span>
+                </div>
+              </div>
+            </Link>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <Link
+              to="/hotels"
+              className="group relative flex flex-col h-full rounded-[2rem] overflow-hidden border border-navy/10 bg-white shadow-sm hover:shadow-2xl hover:shadow-navy/15 hover:-translate-y-1.5 transition-all duration-500"
+            >
+              <div className="relative h-56 sm:h-64 overflow-hidden">
+                <img
+                  src={hotelOneCover}
+                  alt="SA Group hotel room"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent" />
+                <span className="absolute top-5 left-5 bg-white text-navy text-[10px] font-bold px-3 py-1.5 rounded-full tracking-wide uppercase">
+                  Short & flexible stays
+                </span>
+                <div className="absolute left-6 right-6 bottom-5 text-white">
+                  <h3 className="font-display font-extrabold text-2xl sm:text-3xl">SA Group Hotels</h3>
+                  <p className="text-white/70 text-sm mt-1">Book by the night across Lahore</p>
+                </div>
+              </div>
+
+              <div className="p-6 sm:p-7 flex flex-col flex-1">
+                <p className="text-charcoal/65 leading-7">
+                  Private rooms for travelers, families, and business guests, with nightly rates,
+                  parking, and easy online booking.
+                </p>
+                <div className="grid grid-cols-2 gap-3 mt-6">
+                  {['Standard, Deluxe & Family', 'Nightly pricing', 'Free parking', 'Instant booking'].map((point) => (
+                    <div key={point} className="feature-pill !p-2.5 !text-xs">
+                      <span className="!w-5 !h-5 !text-[10px]">✓</span>
+                      {point}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-auto pt-6 flex items-center justify-between">
+                  <span className="font-bold text-navy">Explore Hotels</span>
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-navy text-white transition-all duration-300 group-hover:bg-amber group-hover:text-navy group-hover:rotate-[-35deg]">→</span>
+                </div>
+              </div>
+            </Link>
+          </Reveal>
+        </div>
       </section>
 
       <StatsSection />
@@ -238,12 +371,14 @@ export default function Home() {
         </div>
 
         <Reveal delay={150}>
-          <div className="mt-20 relative bg-navy rounded-[2rem] px-8 py-12 text-center overflow-hidden">
+          <div className="mt-20 relative bg-navy rounded-[2rem] px-8 py-14 text-center overflow-hidden">
             <div className="absolute inset-0 grid-pattern opacity-10" />
+            <div className="absolute -top-8 -left-2 sm:left-8 text-amber/15 font-display text-[10rem] leading-none select-none" aria-hidden="true">“</div>
             <p className="relative text-cream text-xl md:text-3xl font-display font-semibold leading-relaxed max-w-3xl mx-auto">
-              “Every resident deserves a safe, affordable place to call home while building their future.”
+              Every resident deserves a safe, affordable place to call home while building their future.
             </p>
-            <p className="relative text-amber text-sm font-semibold mt-5 tracking-wide">
+            <div className="relative w-10 h-[2px] bg-amber mx-auto mt-6" />
+            <p className="relative text-amber text-sm font-semibold mt-4 tracking-wide">
               SA GROUP OF HOSTELS
             </p>
           </div>
@@ -268,8 +403,8 @@ export default function Home() {
         <div className="space-y-6 mt-20">
           {branches.map((branch, index) => (
             <Reveal key={branch.id} delay={index * 60}>
-              <div className="group bg-white border border-navy/10 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
-                <div className="bg-navy px-6 py-5 flex items-center justify-between flex-wrap gap-3 relative overflow-hidden">
+              <div className="group bg-white border border-navy/10 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-navy/10 transition-shadow duration-300">
+                <div className="bg-gradient-to-r from-navy to-navy-soft px-6 py-5 flex items-center justify-between flex-wrap gap-3 relative overflow-hidden">
                   <div className="absolute inset-0 grid-pattern opacity-10" />
 
                   <div className="relative flex items-center gap-3">
