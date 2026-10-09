@@ -7,6 +7,7 @@ import HotelDetail from '../pages/HotelDetail.jsx'
 import NotFound from '../pages/NotFound.jsx'
 
 import AdminLogin from '../pages/admin/AdminLogin.jsx'
+import AdminResetPassword from '../pages/admin/AdminResetPassword.jsx'
 import AdminDashboard from '../pages/admin/AdminDashboard.jsx'
 import ProtectedAdminRoute from '../components/admin/ProtectedAdminRoute.jsx'
 
@@ -33,6 +34,8 @@ export default function AppRoutes() {
         path="/admin/login"
         element={<AdminLogin />}
       />
+
+      <Route path="/admin/reset-password" element={<AdminResetPassword />} />
 
       {/* Protected admin routes */}
       <Route element={<ProtectedAdminRoute />}>

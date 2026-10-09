@@ -4,7 +4,6 @@ import Button from '../components/common/Button.jsx'
 import Reveal from '../components/common/Reveal.jsx'
 import StatsSection from '../components/common/StatsSection.jsx'
 import BranchCard from '../components/branch/BranchCard.jsx'
-import BedPricingTable from '../components/branch/BedPricingTable.jsx'
 import AmenitiesList from '../components/branch/AmenitiesList.jsx'
 import ReviewsSlider from '../components/reviews/ReviewsSlider.jsx'
 import ContactForm from '../components/common/ContactForm.jsx'
@@ -400,42 +399,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="space-y-6 mt-20">
-          {branches.map((branch, index) => (
-            <Reveal key={branch.id} delay={index * 60}>
-              <div className="group bg-white border border-navy/10 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-navy/10 transition-shadow duration-300">
-                <div className="bg-gradient-to-r from-navy to-navy-soft px-6 py-5 flex items-center justify-between flex-wrap gap-3 relative overflow-hidden">
-                  <div className="absolute inset-0 grid-pattern opacity-10" />
 
-                  <div className="relative flex items-center gap-3">
-                    {branch.isHeadOffice && (
-                      <span className="bg-amber text-navy text-[10px] font-bold px-2.5 py-1 rounded-full">
-                        HEAD OFFICE
-                      </span>
-                    )}
-
-                    <div>
-                      <h3 className="font-display font-bold text-cream text-lg">{branch.name}</h3>
-                      <p className="text-cream/55 text-xs">{branch.location}</p>
-                    </div>
-                  </div>
-
-                  <Button
-                    to={`/branches/${branch.id}`}
-                    variant="secondary"
-                    className="relative !px-4 !py-2"
-                  >
-                    View Details →
-                  </Button>
-                </div>
-
-                <div className="p-6">
-                  <BedPricingTable pricing={branch.bedPricing} />
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
       </section>
 
       <section id="amenities" className="section-shell scroll-mt-24">

@@ -1,3 +1,4 @@
+import LineIcon from '../common/LineIcon.jsx'
 import { Link } from 'react-router-dom'
 
 function HotelImage({
@@ -12,7 +13,7 @@ function HotelImage({
         className={`flex items-center justify-center bg-gradient-to-br from-navy to-slate-700 ${className}`}
       >
         <div className="text-center text-white/70">
-          <div className="text-3xl">🏨</div>
+          <div className="text-3xl"><LineIcon name="hotel" size={22} /></div>
           <p className="mt-2 text-xs font-semibold">
             {fallbackLabel}
           </p>
@@ -102,7 +103,7 @@ export default function HotelCard({ hotel }) {
           <div className="rounded-2xl border border-navy/10 bg-cream/50 p-4">
             <div className="flex items-center gap-2">
               <span className="text-xl">
-                🛏️
+                <LineIcon name="bed" size={22} />
               </span>
 
               <span className="text-[10px] font-bold uppercase tracking-wide text-charcoal/45">
@@ -134,7 +135,7 @@ export default function HotelCard({ hotel }) {
           <div className="rounded-2xl border border-navy/10 bg-cream/50 p-4">
             <div className="flex items-center gap-2">
               <span className="text-xl">
-                🚗
+                <LineIcon name="car" size={22} />
               </span>
 
               <span className="text-[10px] font-bold uppercase tracking-wide text-charcoal/45">
@@ -206,7 +207,7 @@ export default function HotelCard({ hotel }) {
                       />
                     ) : (
                       <div className="h-full w-full flex items-center justify-center bg-cream text-2xl">
-                        🛏️
+                        <LineIcon name="bed" size={22} />
                       </div>
                     )}
                   </div>

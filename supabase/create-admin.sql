@@ -4,7 +4,7 @@
 
 insert into public.admin_profiles(user_id,role,display_name)
 values (
-  'YOUR_AUTH_USER_UUID'::uuid,
+  'd7494a47-dbcc-40d1-a268-7d4126107f94'::uuid,
   'admin',
   'SA Group Admin'
 )

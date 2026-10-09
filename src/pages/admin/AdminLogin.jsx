@@ -3,6 +3,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import Logo from '../../components/common/Logo.jsx'
 import {
   adminLogin,
+  sendAdminPasswordReset,
   checkCurrentUserIsAdmin,
   getCurrentSession,
 } from '../../services/adminService.js'
@@ -17,6 +18,9 @@ export default function AdminLogin() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [resetMode, setResetMode] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
+  const [resetSubmitting, setResetSubmitting] = useState(false)
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -101,7 +105,25 @@ export default function AdminLogin() {
     }
   }
 
-  if (alreadyLoggedIn) {
+  const handleForgotPassword = async (event) => {
+    event.preventDefault()
+    setError('')
+    if (!form.email.trim()) {
+      setError('Enter your admin email address.')
+      return
+    }
+    setResetSubmitting(true)
+    try {
+      await sendAdminPasswordReset(form.email)
+      setResetSent(true)
+    } catch (resetError) {
+      setError(resetError?.message || 'Unable to send reset email. Please try again.')
+    } finally {
+      setResetSubmitting(false)
+    }
+  }
+
+  if (alreadyLoggedIn && !resetMode) {
     return <Navigate to="/admin/dashboard" replace />
   }
 
@@ -126,12 +148,13 @@ export default function AdminLogin() {
             </p>
 
             <h1 className="mt-2 text-3xl font-display font-extrabold text-navy">
-              Admin Login
+              {resetMode ? 'Reset Password' : 'Admin Login'}
             </h1>
 
             <p className="mt-2 text-sm leading-6 text-charcoal/55">
-              Sign in to manage hotel bookings, rooms,
-              prices and parking availability.
+              {resetMode
+                ? 'Enter your admin email to receive a password reset link.'
+                : 'Sign in to manage hotel bookings, rooms, prices and parking availability.'}
             </p>
           </div>
 
@@ -144,7 +167,7 @@ export default function AdminLogin() {
             </div>
           ) : (
             <form
-              onSubmit={handleSubmit}
+              onSubmit={resetMode ? handleForgotPassword : handleSubmit}
               className="mt-8 space-y-5"
             >
               <div>
@@ -167,7 +190,7 @@ export default function AdminLogin() {
                 />
               </div>
 
-              <div>
+              {!resetMode && <div>
                 <label
                   htmlFor="admin-password"
                   className="block text-sm font-semibold text-navy mb-2"
@@ -207,7 +230,13 @@ export default function AdminLogin() {
                     )}
                   </button>
                 </div>
-              </div>
+              </div>}
+
+              {resetMode && resetSent && (
+                <div role="status" className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+                  If an account exists for that email, a reset link has been sent. Check your inbox and spam folder.
+                </div>
+              )}
 
               {error && (
                 <div
@@ -220,12 +249,13 @@ export default function AdminLogin() {
 
               <button
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || resetSubmitting}
                 className="w-full rounded-xl bg-navy px-5 py-3.5 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-amber hover:text-navy hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
               >
-                {submitting
-                  ? 'Signing in...'
-                  : 'Login to Dashboard'}
+                {resetMode ? (resetSubmitting ? 'Sending...' : 'Send Reset Link') : (submitting ? 'Signing in...' : 'Login to Dashboard')}
+              </button>
+              <button type="button" className="w-full text-sm font-semibold text-navy hover:text-amber" onClick={() => { setResetMode((v) => !v); setResetSent(false); setError('') }}>
+                {resetMode ? 'Back to Login' : 'Forgot Password?'}
               </button>
             </form>
           )}

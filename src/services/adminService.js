@@ -330,3 +330,15 @@ export async function updateParkingCapacity(
 
   return data
 }
+
+// Supabase sends a one-time recovery link to the administrator's email.
+export async function sendAdminPasswordReset(email) {
+  const redirectTo = `${window.location.origin}/admin/reset-password`
+  const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo })
+  if (error) throw error
+}
+
+export async function updateAdminPassword(password) {
+  const { error } = await supabase.auth.updateUser({ password })
+  if (error) throw error
+}

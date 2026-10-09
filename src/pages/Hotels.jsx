@@ -1,3 +1,4 @@
+import LineIcon from '../components/common/LineIcon.jsx'
 import {
   useEffect,
   useMemo,
@@ -138,22 +139,22 @@ export default function Hotels() {
 
                 <div className="grid grid-cols-2 gap-4 mt-5">
                   <div className="rounded-2xl bg-white border border-navy/10 p-4">
-                    <span className="text-xl">🏨</span>
+                    <span className="text-xl"><LineIcon name="hotel" size={22} /></span>
                     <p className="text-2xl font-extrabold text-navy mt-2">{hotels.length || '—'}</p>
                     <p className="text-xs text-charcoal/55 mt-0.5">Hotel branches</p>
                   </div>
                   <div className="rounded-2xl bg-white border border-navy/10 p-4">
-                    <span className="text-xl">🛏️</span>
+                    <span className="text-xl"><LineIcon name="bed" size={22} /></span>
                     <p className="text-2xl font-extrabold text-navy mt-2">{heroStats ? heroStats.totalRoomsAvailable : '—'}</p>
                     <p className="text-xs text-charcoal/55 mt-0.5">Rooms available</p>
                   </div>
                   <div className="rounded-2xl bg-white border border-navy/10 p-4">
-                    <span className="text-xl">🚗</span>
+                    <span className="text-xl"><LineIcon name="car" size={22} /></span>
                     <p className="text-2xl font-extrabold text-navy mt-2">{heroStats ? heroStats.totalParkingAvailable : '—'}</p>
                     <p className="text-xs text-charcoal/55 mt-0.5">Parking slots free</p>
                   </div>
                   <div className="rounded-2xl bg-navy p-4 text-white">
-                    <span className="text-xl">💰</span>
+                    <span className="text-xl"><LineIcon name="money" size={22} /></span>
                     <p className="text-2xl font-extrabold text-amber mt-2">{heroStats ? `Rs.${heroStats.cheapest.toLocaleString()}` : '—'}</p>
                     <p className="text-xs text-white/60 mt-0.5">Starting per night</p>
                   </div>
@@ -262,7 +263,7 @@ export default function Hotels() {
                         <div className="grid grid-cols-2 gap-3 mt-5">
                           <div className="rounded-xl bg-white/10 p-3">
                             <span className="text-xl">
-                              🛏️
+                              <LineIcon name="bed" size={22} />
                             </span>
 
                             <p className="text-2xl font-bold mt-2">
@@ -279,7 +280,7 @@ export default function Hotels() {
 
                           <div className="rounded-xl bg-white/10 p-3">
                             <span className="text-xl">
-                              🚗
+                              <LineIcon name="car" size={22} />
                             </span>
 
                             <p className="text-2xl font-bold mt-2">

@@ -1,3 +1,4 @@
+import LineIcon from '../components/common/LineIcon.jsx'
 import {
   useEffect,
   useState,
@@ -355,7 +356,7 @@ export default function HotelDetail() {
                 <article className="h-full rounded-3xl border border-navy/10 bg-white p-6 shadow-sm hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
                   <div className="flex items-center justify-between gap-3">
                     <span className="grid h-12 w-12 place-items-center rounded-2xl bg-amber/15 text-2xl">
-                      🛏️
+                      <LineIcon name="bed" size={22} />
                     </span>
 
                     <span
